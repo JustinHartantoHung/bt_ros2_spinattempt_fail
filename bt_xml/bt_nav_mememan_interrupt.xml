@@ -1,0 +1,38 @@
+<root main_tree_to_execute = "MainTree">
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+            <SetBlackboard output_key="Goal_a" value="0.00;0.00;0.0;1.0" />
+            <SetBlackboard output_key="Goal_b" value="1.00;1.533;0.0;1.0" />
+            <SetBlackboard output_key="Goal_c" value="1.588;2;0.0;1.0" />
+            <Fallback>
+                <ReactiveSequence>
+                    <InterruptEvent event="gohome"/>
+                    <Repeat num_cycles="10">
+                        <Sequence>
+                            <SubTree ID="MoveRobot" target="Goal_a" />
+                            <SubTree ID="SpinRobot"/>
+                            
+                            <SubTree ID="MoveRobot" target="Goal_b" />
+                                                        <SubTree ID="SpinRobot"/>
+                        </Sequence>
+                    </Repeat>
+                </ReactiveSequence>
+                <Sequence>          
+                    <SubTree ID="MoveRobot" target="Goal_c" />
+                </Sequence>
+            </Fallback>
+        </Sequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MoveRobot">
+        <Sequence name="SetGoal">
+            <Nav2Client goal="{target}" />
+        </Sequence>
+    </BehaviorTree>
+    
+    <BehaviorTree ID="SpinRobot">
+        <Sequence name="SetSpin">
+            <Spinbot spin_dis= "10" />
+        </Sequence>
+    </BehaviorTree>
+</root>
